@@ -1,1 +1,1 @@
-import pieces
+import pieces,board
