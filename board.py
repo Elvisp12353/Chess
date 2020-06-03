@@ -13,17 +13,22 @@ This module make the board
 """
 
 class board(object):
-    def __init__(self,obj):
-        self.obj = obj
+    def __init__(self):
+        self.obj = self.make_board()
     
     def make_board(self):
-        matriz =[]
-        for i in range(8):
-            matriz.append([0]*8)
-        return matriz  
-  
-n  = board(3) 
-n.obj = n.make_board()
+        matriz =[]        
+        for i in range(8):     
+                matriz.append(["⬜"]*8)
+        return matriz 
+
+    def show_board(self):
+        for element in range(8):
+            print(self.obj[element])
+    
+n  = board()
+n.show_board() 
+
 
 
         
