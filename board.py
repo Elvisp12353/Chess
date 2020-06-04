@@ -17,20 +17,25 @@ class board(object):
         self.obj = self.make_board()
     
     def make_board(self):
-        matriz =[]        
-        for i in range(8):     
-                matriz.append(["⬜"]*8)
+        matriz =[]      
+        line =[]
+        
+        for  i in range(4):     
+            line.append("⬜")
+            line.append("⬛")
+        
+        
+        for i in range(8):            
+            if i %2 == 0:     
+                matriz.append(line)                
+            else:
+                matriz.append(line[::-1])
         return matriz 
 
     def show_board(self):
         for element in range(8):
             print(self.obj[element])
+        
     
-n  = board()
-n.show_board() 
-
-
-
-        
-
-        
+n = board()
+n.show_board()
