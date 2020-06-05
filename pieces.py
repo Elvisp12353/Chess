@@ -12,37 +12,78 @@ __status__ ="Developer"
 This module make the pieces That will be used in the game
 """
 class piece(object):
-    def __init__(self,icon):
+    def __init__(self,icon,color):
         self.icon = icon
-        
-
-class king(piece):
-    def __init__(self):
-        self.icon = "♚"
-
+        self.color = color
     
+class king(piece):
+    def __init__(self,color):        
+        self.color = color
+        if(self.color =="white"):
+            self.icon = "♔"
+        else:
+            self.icon = "♚"
+    
+    def move(self):
+        pass
+
 class queen(piece):
-    def __init__(self):
-        self.icon = "♛"
-  
+    def __init__(self,color):
+        self.color = color
+        if(self.color =="white"):
+            self.icon = "♕"
+        else:
+            self.icon = "♛"        
+    
+    def move(self):
+        pass
 
 class rook(piece):
-    def __init__(self):
-        self.icon = "♜"
-        
+    def __init__(self,color):        
+        self.color = color
+
+        if(self.color =="white"):
+            self.icon = "♖"
+        else:
+            self.icon = "♜"
+
+    def move(self):
+        pass
+
+
 
 class bishops(piece):
-    def __init__(self):
-        self.icon = "♝"
+    def __init__(self,color):        
+        self.color = color
+        if(self.color =="white"):
+            self.icon = "♗"
+        else:
+            self.icon = "♝"
+    def move(self):
+        pass
+
+
 
 class knights(piece):
-    def __init__(self):
-        self.icon = "♞"
+    def __init__(self,color):          
+        self.color = color
+        if(self.color =="white"):
+            self.icon = "♘"
+        else:
+            self.icon = "♞"
+    def move(self):
+        pass
 
 class pawn(piece):
-    def __init__(self):
-        self.icon = "♟"
+    def __init__(self,color):       
+        self.color = color
+        if(self.color =="white"):
+            self.icon = "♙"
+        else:
+            self.icon = "♟"
+    def move(self):
+        pass
 
 
-numbre1 = pawn()
+numbre1 = queen("white")
 print(numbre1.icon)

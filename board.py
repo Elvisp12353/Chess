@@ -13,29 +13,30 @@ This module make the board
 """
 
 class board(object):
+    """This is the board object"""
     def __init__(self):
         self.obj = self.make_board()
     
     def make_board(self):
-        matriz =[]      
-        line =[]
+        """This function make the board"""
+        matrix =[]  #This is the matrix that'll contain the board    
+        line =[]    #This contain the lines 
         
         for  i in range(4):     
             line.append("⬜")
             line.append("⬛")
         
         
-        for i in range(8):            
-            if i %2 == 0:     
-                matriz.append(line)                
+        for block_number in range(8):            
+            if block_number %2 == 0:     
+                matrix.append(line)                
             else:
-                matriz.append(line[::-1])
-        return matriz 
+                matrix.append(line[::-1])
+        return matrix 
 
     def show_board(self):
+        """This function show the board in a organized way"""
         for element in range(8):
             print(self.obj[element])
         
     
-n = board()
-n.show_board()
