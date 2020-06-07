@@ -35,9 +35,13 @@ class board(object):
                 matrix.append(line[::-1])
         return matrix 
 
-    def show_board(self):
+    def show_board(self,board):
         """This function show the board in a organized way"""
         for line in range(8):
-            print(self.obj[line])
+            for element in range(8):
+                if type(board[line][element]) == object:
+                    board[line][element] = element.icon
+
+        return board
         
     
