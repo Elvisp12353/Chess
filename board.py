@@ -21,10 +21,11 @@ class board(object):
         """This function make the board"""
         matrix =[]  #This is the matrix that'll contain the board    
         line =[]    #This contain the lines 
-        
+            
         for  i in range(4):     
             line.append("⬜")
             line.append("⬛")
+            
         
         
         for block_number in range(8):            
@@ -36,7 +37,7 @@ class board(object):
 
     def show_board(self):
         """This function show the board in a organized way"""
-        for element in range(8):
-            print(self.obj[element])
+        for line in range(8):
+            print(self.obj[line])
         
     

@@ -84,6 +84,3 @@ class pawn(piece):
     def move(self):
         pass
 
-
-numbre1 = queen("white")
-print(numbre1.icon)
