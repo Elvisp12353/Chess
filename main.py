@@ -4,18 +4,18 @@ def generate_pieces(color="black"):
     pawns =[]
     line = []
     for each in range(8):
-        pawns.append(pieces.pawn(color))
+        pawns.append(pieces.Pawn(color))
         if each < 2: 
             if each == 1:
-                line.append(pieces.queen(color))
-                line.append(pieces.king(color)) 
-                line.append(pieces.bishops(color))  
-                line.append(pieces.knights(color))
-                line.append(pieces.rook(color))                        
+                line.append(pieces.Queen(color))
+                line.append(pieces.King(color)) 
+                line.append(pieces.Bishops(color))  
+                line.append(pieces.Knights(color))
+                line.append(pieces.Rook(color))                        
             else:
-                line.append(pieces.rook(color))
-                line.append(pieces.knights(color))
-                line.append(pieces.bishops(color))             
+                line.append(pieces.Rook(color))
+                line.append(pieces.Knights(color))
+                line.append(pieces.Bishops(color))             
     return line,pawns
 
 

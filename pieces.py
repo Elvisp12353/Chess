@@ -48,11 +48,8 @@ class Piece(object):
     
 class King(Piece):
     def __init__(self,color,icon="",name="king"):   
-        Piece.__init__(self,color,icon,name)
-    
-       
-    
-   
+        Piece.__init__(self,color,icon,name)        
+     
 
 class Queen(Piece):
     def __init__(self,color,icon="",name="queen"):   
