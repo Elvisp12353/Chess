@@ -10,77 +10,74 @@ __status__ ="Developer"
 
 """
 This module make the pieces That will be used in the game
+
 """
-class piece(object):
-    def __init__(self,icon,color):
+
+white_pieces={
+"king":"♔",
+"queen":"♕",
+"rook":"♖",
+"bishop":"♗",
+"knight":"♘",
+"pawn":"♙"
+
+}
+black_pieces={
+"king":"♚",
+"queen":"♛",
+"rook":"♜",
+"bishop":"♝",
+"knight":"♞",
+"pawn":"♟"
+
+}
+
+class Piece(object):
+    
+    def __init__(self,color,icon,name):
         self.icon = icon
         self.color = color
+        self.name = name
+        if self.color == "white":
+            self.icon = white_pieces[self.name]
+        else:
+            self.icon = black_pieces[self.name]
+
+    def move(self):
+        pass
     
-class king(piece):
-    def __init__(self,color):        
-        self.color = color
-        if(self.color =="white"):
-            self.icon = "♔"
-        else:
-            self.icon = "♚"
+class King(Piece):
+    def __init__(self,color,icon="",name="king"):   
+        Piece.__init__(self,color,icon,name)
     
-    def move(self):
-        pass
-
-class queen(piece):
-    def __init__(self,color):
-        self.color = color
-        if(self.color =="white"):
-            self.icon = "♕"
-        else:
-            self.icon = "♛"        
+       
     
-    def move(self):
-        pass
+   
 
-class rook(piece):
-    def __init__(self,color):        
-        self.color = color
+class Queen(Piece):
+    def __init__(self,color,icon="",name="queen"):   
+        Piece.__init__(self,color,icon,name)
+    
+        
 
-        if(self.color =="white"):
-            self.icon = "♖"
-        else:
-            self.icon = "♜"
+class Rook(Piece):
+     def __init__(self,color,icon="",name="rook"):   
+        Piece.__init__(self,color,icon,name)
+  
+   
 
-    def move(self):
-        pass
+class Bishops(Piece):
+     def __init__(self,color,icon="",name="bishop"):   
+        Piece.__init__(self,color,icon,name)
 
-
-
-class bishops(piece):
-    def __init__(self,color):        
-        self.color = color
-        if(self.color =="white"):
-            self.icon = "♗"
-        else:
-            self.icon = "♝"
-    def move(self):
-        pass
+class Knights(Piece):
+     def __init__(self,color,icon="",name="knight"):   
+        Piece.__init__(self,color,icon,name)
 
 
+class Pawn(Piece):
+    def __init__(self,color,icon="",name="pawn"):   
+        Piece.__init__(self,color,icon,name)
 
-class knights(piece):
-    def __init__(self,color):          
-        self.color = color
-        if(self.color =="white"):
-            self.icon = "♘"
-        else:
-            self.icon = "♞"
-    def move(self):
-        pass
-
-class pawn(piece):
-    def __init__(self,color):       
-        self.color = color
-        if(self.color =="white"):
-            self.icon = "♙"
-        else:
-            self.icon = "♟"
-    def move(self):
-        pass
-
+  
+ 
