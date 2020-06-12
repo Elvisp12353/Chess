@@ -12,7 +12,7 @@ __status__ ="Developer"
 This module make the board
 """
 
-class board(object):
+class Board(object):
     """This is the board object"""
     def __init__(self):
         self.obj = self.make_board()
@@ -24,10 +24,8 @@ class board(object):
             
         for  i in range(4):     
             line.append("⬜")
-            line.append("⬛")
-            
-        
-        
+            line.append("⬛")           
+                
         for block_number in range(8):            
             if block_number %2 == 0:     
                 matrix.append(line)                
@@ -43,5 +41,10 @@ class board(object):
                     board[line][element] = element.icon
 
         return board
+
         
     
+def generate_board():
+    New_board = Board()
+    New_board.make_board()
+    return New_board

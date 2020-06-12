@@ -13,6 +13,7 @@ This module make the pieces That will be used in the game
 
 """
 
+#Dictionaries that contains the icons of the pieces
 white_pieces={
 "king":"♔",
 "queen":"♕",
@@ -75,6 +76,25 @@ class Knights(Piece):
 class Pawn(Piece):
     def __init__(self,color,icon="",name="pawn"):   
         Piece.__init__(self,color,icon,name)
+
+def generate_pieces(color):
+    
+    pawns =[]
+    line = []
+    for each in range(8):
+        pawns.append(Pawn(color))
+        if each < 2: 
+            if each == 1:
+                line.append(Queen(color))
+                line.append(King(color)) 
+                line.append(Bishops(color))  
+                line.append(Knights(color))
+                line.append(Rook(color))                        
+            else:
+                line.append(Rook(color))
+                line.append(Knights(color))
+                line.append(Bishops(color))             
+    return line,pawns
 
   
  

@@ -1,45 +1,45 @@
 import pieces,board
-def generate_pieces(color="black"):
-    
-    pawns =[]
-    line = []
-    for each in range(8):
-        pawns.append(pieces.Pawn(color))
-        if each < 2: 
-            if each == 1:
-                line.append(pieces.Queen(color))
-                line.append(pieces.King(color)) 
-                line.append(pieces.Bishops(color))  
-                line.append(pieces.Knights(color))
-                line.append(pieces.Rook(color))                        
+
+black_pieces = pieces.generate_pieces("black")
+black_pieces = pieces.generate_pieces("white")
+board = board.generate_board() 
+
+def show_board(board):
+        """This function show the board in a organized way"""
+        for line in board:
+            print(line)
+
+def put_in_start_position(pieces,color,board):
+   
+   if color=="black":
+    board.obj[0] = pieces[0]
+    board.obj[1] = pieces[1]
+   else:
+    board.obj[7] = pieces[0]
+    board.obj[6] = pieces[1]
+   return board.show_board(board.obj)
+
+def change_to_icon(board):
+    changed_board = []
+    new_line = []
+    for line in board:
+        for square in line:
+            if type(square) != str:
+                new_line.append(square.icon)
+                if len(new_line) == 8:
+                    changed_board.append(new_line)
+                    new_line = []
             else:
-                line.append(pieces.Rook(color))
-                line.append(pieces.Knights(color))
-                line.append(pieces.Bishops(color))             
-    return line,pawns
+                new_line.append(square)
+                if len(new_line) == 8:
+                    changed_board.append(new_line)
+                    new_line = []
+
+    return changed_board
 
 
+put_in_start_position(black_pieces,"black",board)
+put_in_start_position(black_pieces,"white",board)
 
-def generate_board():
-    New_board = board.board()
-    New_board.make_board()
-    return New_board
+print(show_board(change_to_icon(board.obj)))
 
-def order_board(board):
-    for element in board:
-        print(element)
-
-def replace_pieces():
-   board = generate_board()  
-
-   black_pieces = generate_pieces("black")
-   white_pieces = generate_pieces("white")
-   
-   board.obj[0] = black_pieces[0]
-   board.obj[1] = black_pieces[1]
-   board.obj[7] = white_pieces[0]
-   board.obj[6] = white_pieces[1]
-   
-   return order_board(board.obj)
-
-print(replace_pieces())
