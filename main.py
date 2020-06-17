@@ -9,8 +9,7 @@ def show_board(board):
         for line in board:
             print(line)
         return None
-        
-
+     
 def add_position_to_the_pieces(pieces,color):
     if color == "black":
         row_1 = 0
@@ -27,8 +26,6 @@ def add_position_to_the_pieces(pieces,color):
                 piece.x = row_2
             piece.y = y
             y+=1
-
-
 
 def put_in_start_position(pieces,color,board):
     
@@ -65,7 +62,6 @@ add_position_to_the_pieces(black_pieces,"black")
 add_position_to_the_pieces(white_pieces,"white")
 put_in_start_position(black_pieces,"black",board)
 put_in_start_position(white_pieces,"white",board)
-
 
 
 print(show_board( change_to_icon(board.obj)))

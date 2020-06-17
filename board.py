@@ -43,9 +43,18 @@ class Board(object):
 
         return board
 
+
         
     
 def generate_board():
     New_board = Board()
     New_board.make_board()
     return New_board
+
+def replace_spaces(x,y):
+    if x %2 ==0 and y %2 !=0:
+        return "⬜"
+    elif x %2 !=0 and y %2 ==0:
+        return "⬜"
+    else:
+        return "⬛"
