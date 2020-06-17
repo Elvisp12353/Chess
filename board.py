@@ -14,7 +14,7 @@ This module make the board
 
 class Board(object):
     """This is the board object"""
-    def __init__(self):
+    def __init__(self,moves=0):
         self.obj = self.make_board()
     
     def make_board(self):
@@ -23,6 +23,7 @@ class Board(object):
         line =[]    #This contain the lines 
             
         for  i in range(4):     
+            i = i
             line.append("⬜")
             line.append("⬛")           
                 
