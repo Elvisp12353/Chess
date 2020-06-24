@@ -15,25 +15,37 @@ This module make the pieces That will be used in the game
 import board
 #Dictionaries that contains the icons of the pieces
 white_pieces={
-"king":"♔",
-"queen":"♕",
-"rook":"♖",
-"bishop":"♗",
-"knight":"♘",
-"pawn":"♙"
+"king":" ♔",
+"queen":" ♕",
+"rook":" ♖",
+"bishop":" ♗",
+"knight":" ♘",
+"pawn":" ♙"
 }
 
 black_pieces={
-"king":"♚",
-"queen":"♛",
-"rook":"♜",
-"bishop":"♝",
-"knight":"♞",
-"pawn":"♟"
+"king":" ♚",
+"queen":" ♛",
+"rook":" ♜",
+"bishop":" ♝",
+"knight":" ♞",
+"pawn":" ♟"
 }
 
+
+
+  
+
 class Piece(object):
+    """
+    This is the father class for all the pieces it have the properties:
     
+    icon = The character of the piece
+    color = color of the piece
+    name = name of the piece (rook, bishop)
+    x,y = this is for the position of the piece
+    moves = here i count the cuantity of movements of the pieces
+    """
     def __init__(self,color,x,y,icon,name,moves):
         self.icon = icon
         self.color = color
@@ -46,25 +58,30 @@ class Piece(object):
             self.icon = white_pieces[self.name]
         else:
             self.icon = black_pieces[self.name]
-    def eat(self):
+
+    def eat(self,entry_board,x,y):
         pass
+
+        
+
     def move(self,entry_board,new_X,new_Y):
-        if type(entry_board[new_X][new_Y]) == str:
-            old_x = self.x
-            old_y = self.y
-            entry_board[self.x][self.y] = board.replace_spaces(old_x,old_y)
+        board_list = entry_board.obj
+        if type(board_list[new_X][new_Y]) == str:
+                        
+            board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)
+            board_list[new_X][new_Y] = self       
             self.x = new_X
             self.Y = new_Y
             self.moves +=1
             entry_board.moves+=1
-            entry_board[new_X][new_Y] = self
+           
             return board
         else:
-            if entry_board[new_X][new_Y].color != self.color:
-                self.eat()
+            if board_list[new_X][new_Y].color != self.color:
+                print("you must eat not move")
             else:
-                return "This movement can't be done"   
-            
+                print("This movement can't be done") 
+
 class King(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="king",moves=0):   
         Piece.__init__(self,color,x,y,icon,name,moves)        
@@ -109,5 +126,21 @@ def generate_pieces(color):
                 line.append(Bishops(color))             
     return line,pawns
 
-  
- 
+def find_obstacle():
+    pass
+def validate_movement(name,x,y,new_x,New_y):
+    if name == "king":
+        pass  
+    elif name == "queen":
+        return True
+    elif name == "rook":
+        return True
+    elif name =="bishop":
+        return True
+    elif name == "knight":
+        return True
+    elif name == "pawn":
+        return True
+    else:
+        print("Error")
+    

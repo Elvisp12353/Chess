@@ -1,4 +1,4 @@
-import pieces,board
+import pieces,board,player
 
 black_pieces = pieces.generate_pieces("black")
 white_pieces = pieces.generate_pieces("white")
@@ -8,7 +8,7 @@ def show_board(board):
         """This function show the board in a organized way"""
         for line in board:
             print(line)
-        return None
+        return " "
      
 def add_position_to_the_pieces(pieces,color):
     if color == "black":
@@ -58,19 +58,35 @@ def change_to_icon(board):
 
 
 #prepare the  board
-add_position_to_the_pieces(black_pieces,"black")
-add_position_to_the_pieces(white_pieces,"white")
-put_in_start_position(black_pieces,"black",board)
-put_in_start_position(white_pieces,"white",board)
-
-
-print(show_board( change_to_icon(board.obj)))
-
+def start_game():
+    add_position_to_the_pieces(black_pieces,"black")
+    add_position_to_the_pieces(white_pieces,"white")
+    put_in_start_position(black_pieces,"black",board)
+    put_in_start_position(white_pieces,"white",board)
+    
+    print(show_board(change_to_icon(board.obj)))
 
 # here starts the game loop
-print("Welcome to chess")
+
+answer  = input("Welcome to chess \n select 1 to start a game \n select 2 to read the rules\n")
+if answer == "1":
+    start_game()
+elif answer == "2":
+    print("this are the rules")
+    exit()
+else:
+    print("invalid input")
+
 while True:
     
-    break
-
+    turn = "player1"
+    if turn == "player1":
+        player.player1.turn(board)
+        print(show_board(change_to_icon(board.obj)))
+        turn = "player2"
+    else:
+        player.player2.turn(board)
+        print(show_board(change_to_icon(board.obj)))
+        turn = "player1"
+    
 

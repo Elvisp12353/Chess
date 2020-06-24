@@ -16,6 +16,7 @@ class Board(object):
     """This is the board object"""
     def __init__(self,moves=0):
         self.obj = self.make_board()
+        self.moves =moves
     
     def make_board(self):
         """This function make the board"""

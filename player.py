@@ -12,8 +12,34 @@ __status__ ="Developer"
 This module make the player
 """
 class player(object):
-    def __init__(self):
-        pass
+    def __init__(self,color,name):
+        self.color = color
+        self.name  = name
+    def turn(self,board):
 
-player1 = player()
-player2 = player()
+        print("""
+choose 1 to move a piece
+choose 2 to eat  a piece
+choose 3 to make a special move
+choose 4 to give up
+        """)
+        selection = input()
+        if selection == "1":
+            pieceX = input("Choose which piece you wanna move")
+            pieceY = input()
+            newX = input("Choose where you wanna move")
+            newY = input()
+            board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY))        
+        elif selection == "2":
+            pass
+        elif selection == "3":
+            pass
+        elif selection == "4":    
+            print(self.name ,"have give up")
+        else:
+            print("Invalid input")
+
+
+
+player1 = player("white","player1")
+player2 = player("black","player2")
