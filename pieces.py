@@ -59,14 +59,12 @@ class Piece(object):
         else:
             self.icon = black_pieces[self.name]
 
-    def eat(self,entry_board,x,y):
-        pass
-
-        
+    
 
     def move(self,entry_board,new_X,new_Y):
         board_list = entry_board.obj
-        if type(board_list[new_X][new_Y]) == str:
+        valid = validate_movement(self.name,self.x,self.y,new_X,new_Y,self.moves)
+        if type(board_list[new_X][new_Y]) == str and valid == True:
                         
             board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)
             board_list[new_X][new_Y] = self       
@@ -76,6 +74,8 @@ class Piece(object):
             entry_board.moves+=1
            
             return board
+        elif valid == False:
+            print("Invalid movement")
         else:
             if board_list[new_X][new_Y].color != self.color:
                 print("you must eat not move")
@@ -128,19 +128,32 @@ def generate_pieces(color):
 
 def find_obstacle():
     pass
-def validate_movement(name,x,y,new_x,New_y):
+def validate_movement(name,x,y,new_x,New_y,moves):
     if name == "king":
         pass  
     elif name == "queen":
-        return True
+        return False
     elif name == "rook":
-        return True
+        if new_x != x and New_y == y or y != New_y and x == new_x:            
+            return True
+        else:
+            return False
+
     elif name =="bishop":
-        return True
+        return False
     elif name == "knight":
-        return True
+        return False
     elif name == "pawn":
-        return True
+        if moves <1:
+            if new_x - x == 1 and y == New_y or new_x - x == -1 and y == New_y:
+                return True
+            elif new_x - x == 2 and y == New_y or new_x - x == -2 and y == New_y:
+                return True
+            return False
+        else:
+            if new_x - x == 1 and y == New_y or new_x - x == -1 and y == New_y:
+                return True
+            return False
     else:
         print("Error")
     

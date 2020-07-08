@@ -15,8 +15,8 @@ def add_position_to_the_pieces(pieces,color):
         row_1 = 0
         row_2 = 1
     else:
-        row_1 = 6
-        row_2 = 7
+        row_1 = 7
+        row_2 = 6
     for row in pieces:
         y =0
         for  piece in row:
