@@ -63,7 +63,8 @@ class Piece(object):
 
     def move(self,entry_board,new_X,new_Y):
         board_list = entry_board.obj
-        valid = validate_movement(self.name,self.x,self.y,new_X,new_Y,self.moves)
+        valid = validate_movement(self,new_X,new_Y,)
+        
         if type(board_list[new_X][new_Y]) == str and valid == True:
                         
             board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)
@@ -128,30 +129,47 @@ def generate_pieces(color):
 
 def find_obstacle():
     pass
-def validate_movement(name,x,y,new_x,New_y,moves):
-    if name == "king":
+def validate_movement(piece_to_move,new_x,New_y):
+    if  new_x > 7 or New_y >7:
+        return False 
+    elif piece_to_move.name == "king":
         pass  
-    elif name == "queen":
-        return False
-    elif name == "rook":
-        if new_x != x and New_y == y or y != New_y and x == new_x:            
+    elif piece_to_move.name == "queen":
+         if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
+            return True
+    elif piece_to_move.name == "rook":
+        if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
             return True
         else:
             return False
-
-    elif name =="bishop":
+    elif piece_to_move.name =="bishop":
         return False
-    elif name == "knight":
-        return False
-    elif name == "pawn":
-        if moves <1:
-            if new_x - x == 1 and y == New_y or new_x - x == -1 and y == New_y:
+    elif piece_to_move.name == "knight":
+        if piece_to_move.x - new_x == 2 or piece_to_move.x - new_x == -2:
+            if piece_to_move.y - New_y == 1 or piece_to_move.y - New_y == -1:
+                return True 
+        elif piece_to_move.y - New_y == 2 or piece_to_move.y - New_y == -2:
+            if piece_to_move.x - new_x == 1 or piece_to_move.x - new_x == -1:
                 return True
-            elif new_x - x == 2 and y == New_y or new_x - x == -2 and y == New_y:
+        else:
+            return False
+    elif piece_to_move.name == "pawn":
+
+        ### still in process
+        if piece_to_move.color == "black":
+            if piece_to_move.x > new_x:
+                return False
+        else:
+            if piece_to_move.x < new_x:
+                return False
+        if piece_to_move.moves <1:
+            if new_x - piece_to_move.x == 1 and piece_to_move.y == New_y or new_x - piece_to_move.x == -1 and piece_to_move.y == New_y:
+                return True
+            elif new_x - piece_to_move.x == 2 and piece_to_move.y == New_y or new_x - piece_to_move.x == -2 and piece_to_move.y == New_y:
                 return True
             return False
         else:
-            if new_x - x == 1 and y == New_y or new_x - x == -1 and y == New_y:
+            if new_x - piece_to_move.x == 1 and piece_to_move.y == New_y or new_x - piece_to_move.x == -1 and piece_to_move.y == New_y:
                 return True
             return False
     else:
