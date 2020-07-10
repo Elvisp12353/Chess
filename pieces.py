@@ -130,19 +130,38 @@ def generate_pieces(color):
 def find_obstacle():
     pass
 def validate_movement(piece_to_move,new_x,New_y):
+
+    move_distance_x = new_x - piece_to_move.x
+    move_distance_y = New_y - piece_to_move.y
+    negative_distance = - move_distance_x 
+
     if  new_x > 7 or New_y >7:
         return False 
     elif piece_to_move.name == "king":
-        pass  
-    elif piece_to_move.name == "queen":
-         if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
+        if move_distance_x <2 and move_distance_y <2:
             return True
+        else:
+            return False          
+    elif piece_to_move.name == "queen":
+        if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
+            return True
+        elif New_y - piece_to_move.y == move_distance_x and new_x - piece_to_move.x == negative_distance or new_x - piece_to_move.x == move_distance_x and New_y - piece_to_move.y == negative_distance:
+            return True
+        else:
+            return False
     elif piece_to_move.name == "rook":
         if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
             return True
         else:
             return False
     elif piece_to_move.name =="bishop":
+        
+        if New_y - piece_to_move.y == move_distance_x and new_x - piece_to_move.x == negative_distance or new_x - piece_to_move.x == move_distance_x and New_y - piece_to_move.y == negative_distance:
+            return True
+        else:
+            return False
+
+    
         return False
     elif piece_to_move.name == "knight":
         if piece_to_move.x - new_x == 2 or piece_to_move.x - new_x == -2:
