@@ -31,10 +31,7 @@ black_pieces={
 "knight":" ♞",
 "pawn":" ♟"
 }
-
-
-
-  
+ 
 
 class Piece(object):
     """
@@ -59,8 +56,6 @@ class Piece(object):
         else:
             self.icon = black_pieces[self.name]
 
-    
-
     def move(self,entry_board,new_X,new_Y):
         board_list = entry_board.obj
         valid = validate_movement(self,new_X,new_Y,)
@@ -81,9 +76,17 @@ class Piece(object):
            
         else:
             if board_list[new_X][new_Y].color != self.color:
+                board_list[self.x][self.y] = board.replace_spaces(self.x,self.y) 
+                self.x = new_X
+                self.Y = new_Y
+                self.moves +=1
+                entry_board.moves+=1
+                board_list[new_X][new_Y] = self
+            
                 print("you must eat not move")
             else:
                 print("This movement can't be done") 
+        return board
 
 class King(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="king",moves=0):   
@@ -129,7 +132,7 @@ def generate_pieces(color):
                 line.append(Bishops(color))             
     return line,pawns
 
-def find_obstacle():
+def find_obstacle(piece,new_x,new_y):
     pass
 def validate_movement(piece_to_move,new_x,New_y):
 
@@ -140,10 +143,10 @@ def validate_movement(piece_to_move,new_x,New_y):
     if  new_x > 7 or New_y >7:
         return False 
     elif piece_to_move.name == "king":
-        if move_distance_x <2 and move_distance_y <2:
+        if move_distance_x in [0,1,-1] and move_distance_y in [0,1,-1]:
             return True
         else:
-            return False          
+            return False                 
     elif piece_to_move.name == "queen":
         if new_x != piece_to_move.x and New_y == piece_to_move.y:            
             return True
@@ -171,12 +174,10 @@ def validate_movement(piece_to_move,new_x,New_y):
     
         return False
     elif piece_to_move.name == "knight":
-        if piece_to_move.x - new_x == 2 or piece_to_move.x - new_x == -2:
-            if piece_to_move.y - New_y == 1 or piece_to_move.y - New_y == -1:
-                return True 
-        elif piece_to_move.y - New_y == 2 or piece_to_move.y - New_y == -2:
-            if piece_to_move.x - new_x == 1 or piece_to_move.x - new_x == -1:
-                return True
+        if piece_to_move.x - new_x in [2,-2] and piece_to_move.y - New_y in [1,-1]:
+            return True 
+        elif piece_to_move.y - New_y in [2,-2] and piece_to_move.x - new_x in [1,-1]:
+            return True
         else:
             return False
     elif piece_to_move.name == "pawn":

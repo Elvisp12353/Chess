@@ -56,7 +56,6 @@ def change_to_icon(board):
 
     return changed_board
 
-
 #prepare the  board
 def start_game():
     

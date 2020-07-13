@@ -13,10 +13,10 @@ This module make the board
 """
 
 class Board(object):
-    """This is the board object"""
+    """This is the board object """
     def __init__(self,moves=0):
         self.obj = self.make_board()
-        self.moves =moves
+        self.moves = moves
     
     def make_board(self):
         """This function make the board"""
@@ -48,10 +48,7 @@ class Board(object):
                     board[line][element] = element.icon
 
         return board
-
-
-        
-    
+   
 def generate_board():
     New_board = Board()
     New_board.make_board()
