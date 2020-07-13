@@ -68,15 +68,17 @@ class Piece(object):
         if type(board_list[new_X][new_Y]) == str and valid == True:
                         
             board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)
-            board_list[new_X][new_Y] = self       
+                   
             self.x = new_X
             self.Y = new_Y
             self.moves +=1
             entry_board.moves+=1
-           
+            board_list[new_X][new_Y] = self
             return board
         elif valid == False:
             print("Invalid movement")
+            return False
+           
         else:
             if board_list[new_X][new_Y].color != self.color:
                 print("you must eat not move")
@@ -143,14 +145,19 @@ def validate_movement(piece_to_move,new_x,New_y):
         else:
             return False          
     elif piece_to_move.name == "queen":
-        if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
+        if new_x != piece_to_move.x and New_y == piece_to_move.y:            
+            return True
+        elif piece_to_move.y != New_y and piece_to_move.x == new_x:
             return True
         elif New_y - piece_to_move.y == move_distance_x and new_x - piece_to_move.x == negative_distance or new_x - piece_to_move.x == move_distance_x and New_y - piece_to_move.y == negative_distance:
             return True
         else:
             return False
     elif piece_to_move.name == "rook":
-        if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
+    
+        if new_x != piece_to_move.x and New_y == piece_to_move.y:            
+            return True
+        elif piece_to_move.y != New_y and piece_to_move.x == new_x:
             return True
         else:
             return False

@@ -21,18 +21,23 @@ class Board(object):
     def make_board(self):
         """This function make the board"""
         matrix =[]  #This is the matrix that'll contain the board    
-        line =[]    #This contain the lines 
-            
+        for i in range(8):
+            matrix.append([])
+
+        line =[]    #This contain the lines     
         for  i in range(4):     
             i = i
             line.append("⬜")
             line.append("⬛")           
-                
-        for block_number in range(8):            
-            if block_number %2 == 0:     
-                matrix.append(line)                
+
+        for position in range(8):
+            if position % 2 ==0:
+                for square in line:
+                    matrix[position].append(square)
             else:
-                matrix.append(line[::-1])
+                for square in line[::-1]:
+                    matrix[position].append(square)
+
         return matrix 
 
     def show_board(self,board):
@@ -53,9 +58,16 @@ def generate_board():
     return New_board
 
 def replace_spaces(x,y):
+    if x == 0:
+        x = 1
+    elif y ==0:
+        y =1
+
     if x %2 ==0 and y %2 !=0:
         return "⬜"
     elif x %2 !=0 and y %2 ==0:
         return "⬜"
     else:
         return "⬛"
+
+

@@ -29,7 +29,7 @@ choose 4 to give up
             pieceY = input()
             newX = input("Choose where you wanna move")
             newY = input()
-            board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY))        
+            return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY))        
         elif selection == "2":
             pass
         elif selection == "3":
