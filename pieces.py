@@ -58,7 +58,7 @@ class Piece(object):
 
     def move(self,entry_board,new_X,new_Y):
         board_list = entry_board.obj
-        valid = validate_movement(self,new_X,new_Y,)
+        valid = validate_movement(self,new_X,new_Y,type(board_list[new_X][new_Y]))
         
         if type(board_list[new_X][new_Y]) == str and valid == True:
                         
@@ -134,7 +134,7 @@ def generate_pieces(color):
 
 def find_obstacle(piece,new_x,new_y):
     pass
-def validate_movement(piece_to_move,new_x,New_y):
+def validate_movement(piece_to_move,new_x,New_y,space_type):
 
     move_distance_x = new_x - piece_to_move.x
     move_distance_y = New_y - piece_to_move.y
@@ -195,9 +195,13 @@ def validate_movement(piece_to_move,new_x,New_y):
             elif new_x - piece_to_move.x == 2 and piece_to_move.y == New_y or new_x - piece_to_move.x == -2 and piece_to_move.y == New_y:
                 return True
             return False
+        
         else:
             if new_x - piece_to_move.x == 1 and piece_to_move.y == New_y or new_x - piece_to_move.x == -1 and piece_to_move.y == New_y:
                 return True
+            elif  move_distance_x in [1,-1] and move_distance_y in [1,-1]:
+                if space_type != str:
+                    return True
             return False
     else:
         print("Error")
