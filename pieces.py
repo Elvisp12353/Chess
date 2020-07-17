@@ -177,6 +177,7 @@ def find_obstacle(piece_to_move,new_x,new_y,board):
     for space in spaces:
         
         if type(board[space[0]][space[1]]) != str:
+            
             return False
     return True
 
