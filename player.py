@@ -17,28 +17,25 @@ class player(object):
         self.name  = name
     def turn(self,board):
 
-        print("""
-choose 1 to move a piece
-choose 2 to make a special move
-choose 3 to give up
-        """)
+        print(
+        """choose 1 to move a piece \nchoose 2 to give up""")
         selection = input()
         if selection == "1":
-            
-                selected_piece = input("Choose which piece you wanna move")
-                pieceX = selected_piece[0] 
-                pieceY = selected_piece[1]
-                new_position = input("Choose where you wanna move")
-                newX = new_position[0]
-                newY = new_position[1]
-                return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY))        
-            
-        elif selection == "2":
-            pass        
-        elif selection == "3":    
+                try:
+                    selected_piece = input("Choose which piece you wanna move")
+                    pieceX = selected_piece[0] 
+                    pieceY = selected_piece[1]
+                    new_position = input("Choose where you wanna move")
+                    newX = new_position[0]
+                    newY = new_position[1]
+                    return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY),self)        
+                except:
+                    print("Bad input")
+                    return False
+        elif selection == "2":    
             print(self.name ,"have give up")
         else:
-            print("Wrong")
+            print("Wrong option")
 
 
 
