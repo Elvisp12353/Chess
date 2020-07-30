@@ -21,17 +21,16 @@ class player(object):
         """choose 1 to move a piece \nchoose 2 to give up""")
         selection = input()
         if selection == "1":
-                try:
-                    selected_piece = input("Choose which piece you wanna move")
-                    pieceX = selected_piece[0] 
-                    pieceY = selected_piece[1]
-                    new_position = input("Choose where you wanna move")
-                    newX = new_position[0]
-                    newY = new_position[1]
-                    return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY),self)        
-                except:
-                    print("Bad input")
-                    return False
+                
+                selected_piece = input("Choose which piece you wanna move")
+                pieceX = selected_piece[0] 
+                pieceY = selected_piece[1]
+                new_position = input("Choose where you wanna move")
+                newX = new_position[0]
+                newY = new_position[1]
+                return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY),self)        
+                
+                    
         elif selection == "2":    
             print(self.name ,"have give up")
         else:

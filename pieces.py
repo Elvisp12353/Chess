@@ -65,17 +65,8 @@ class Piece(object):
             return False
 
         board_list = entry_board.obj 
-        def change_position():
-            board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)   
-            self.x = new_X
-            self.y = new_Y
-            self.moves +=1
-            entry_board.moves+=1
-            board_list[new_X][new_Y] = self
-            return board
-
-        
-        if validate_movement(self,new_X,new_Y,type(board_list[new_X][new_Y])) == False:
+    
+        if validate_movement(self,new_X,new_Y,board_list) == False:
             print("Invalid movement")
             return False
 
@@ -84,20 +75,16 @@ class Piece(object):
                 print("There's a piece in the way")
                 return False
 
-
-        if type(board_list[new_X][new_Y]) == str:#here i check if the space is empty
-            change_position()     
-
-        else:#if is not empty compare the color of the pieces
-            if board_list[new_X][new_Y].color != self.color:# if the colors of the pieces is diferent move the pieces
-                change_position()
-            
-            else:
-                print("You can't eat your own pieces") 
-                return False
+        board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)   
+        self.x = new_X
+        self.y = new_Y
+        self.moves +=1
+        entry_board.moves+=1
+        board_list[new_X][new_Y] = self
+        return board
         
 class King(Piece):
-    def __init__(self,color,x=0,y=0,icon="",name="king",moves=0):   
+    def __init__(self,color,x=0,y=0,icon="",name="king",moves=0,safe=True):   
         Piece.__init__(self,color,x,y,icon,name,moves)        
      
 class Queen(Piece):
@@ -142,8 +129,7 @@ def generate_pieces(color):
                 line.append(Bishops(color))             
     return line,pawns
 
-def find_obstacle(piece_to_move,new_x,new_y,board):
-    
+def make_a_path(piece_to_move,new_x,new_y,entry_board):
     spaces =[]
     diagonal_position =[]
     move_distance_x = new_x - piece_to_move.x
@@ -192,18 +178,31 @@ def find_obstacle(piece_to_move,new_x,new_y,board):
                 for distance in range(move_distance_x):
                     spaces.append([piece_to_move.x+1,piece_to_move.y-1])
     
+    return spaces
+
+def find_obstacle(piece_to_move,new_x,new_y,entry_board):
+    spaces = make_a_path(piece_to_move,new_x,new_y,entry_board)
     #compare if in the positions between the actual position and the new one there's a piece
+    if spaces == True:
+        return True 
+    
     for space in spaces:        
-        if type(board[space[0]][space[1]]) != str:            
+        if type(entry_board[space[0]][space[1]]) != str:            
             return False
     return True
 # validate if the movement is allowed 
-def validate_movement(piece_to_move,new_x,New_y,space_type):
+def validate_movement(piece_to_move,new_x,New_y,board_list):
+    space_type = type(board_list[new_x][New_y])
     diagonal_position =[]
     move_distance_x = new_x - piece_to_move.x
     move_distance_y = New_y - piece_to_move.y
     diagonal_position.append(move_distance_x)
     diagonal_position.append(-(new_x - piece_to_move.x)) 
+    
+    if type(board_list[new_x][New_y]) != str:#here i check if the space is empty
+             if board_list[new_x][New_y].color == piece_to_move.color:# if the colors of the pieces is diferent move the pieces
+                return False    
+
     
     if piece_to_move.name == "king":
         if move_distance_x in [0,1,-1] and move_distance_y in [0,1,-1]:

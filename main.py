@@ -59,7 +59,104 @@ def change_to_icon(board):
 
     return changed_board
 
-#prepare the  board
+
+
+def get_avaible_pieces(board):
+    black_pieces =[]
+    white_pieces =[]
+    for line in board:
+        for square in line:            
+            if type(square) != str:
+                if square.color == "black":
+                    black_pieces.append(square)
+                else:
+                    white_pieces.append(square)
+    return black_pieces,white_pieces
+
+def get_king_position(color,board):
+    for line in board:
+        for square in line:
+            if type(square) != str:
+                if square.name == "king" and square.color == color:
+                    return square
+
+def get_king_avaible_positions(king):
+    positions =[]    
+    for x in range(-1,2):        
+        for y in range(-1,2):
+            if [king.x+x,king.y+y] != [king.x,king.y] and king.x+x <8 and king.x+x >-1 and king.y+y <8 and king.y+y >-1 :
+                if pieces.validate_movement(king,king.x+x,king.y+y,board.obj) == True:
+                    positions.append([king.x+x,king.y+y])
+    return positions        
+
+def can_king_move(king,board):
+    avaible_pieces = get_avaible_pieces(board.obj)
+    if king.color == "black":
+        enemy_pieces = avaible_pieces[1]
+    else:
+        enemy_pieces = avaible_pieces[0]
+
+    positions = get_king_avaible_positions(king)
+    for position in positions:
+        for piece in enemy_pieces:
+            if pieces.validate_movement(piece,position[0],position[1],board.obj) == True and pieces.find_obstacle(piece,position[0],position[1],board.obj) == True:
+                positions.remove(position)
+    if len(positions) >0:
+        return positions
+    else:
+        return False                
+
+def king_check(color):
+    avaible_pieces = get_avaible_pieces(board.obj)
+    if color == "black":
+        king_color = "white"
+        enemy_pieces = avaible_pieces[1]
+        allies = avaible_pieces[0]
+    else:
+        king_color = "black"
+        enemy_pieces = avaible_pieces[0]
+        allies = avaible_pieces[1]
+        
+    king = get_king_position(king_color,board.obj)
+    
+    for piece in enemy_pieces:
+        if pieces.validate_movement(piece,king.x,king.y,board.obj) == True and pieces.find_obstacle(piece,king.x,king.y,board.obj) == True:
+            board.obj[king.x][king.y].safe = False
+            king_is_checkmate = king_checkmate(king,enemy_pieces,allies)
+            if  king_is_checkmate == True:
+                print(turn," king is checkmate game ended")
+                exit()
+            else:
+                return king_is_checkmate
+
+        else:
+            board.obj[king.x][king.y].safe = True
+            return True
+
+def king_checkmate(king,enemies,allies):
+    dangerous_pieces = []
+    movements = []
+    for piece in enemies:
+        if pieces.validate_movement(piece,king.x,king.y,board.obj) == True and pieces.find_obstacle(piece,king.x,king.y,board.obj) == True:
+            dangerous_pieces.append([piece,pieces.make_a_path(piece,king.x,king.y,board.obj)])
+        
+    if can_king_move != False:
+        movements.append([king.x,king.y])
+
+    for piece in dangerous_pieces:
+        for allie in allies:
+            if pieces.validate_movement(allie,piece.x,piece.y,board.obj) == True and pieces.find_obstacle(allie,piece.x,piece.y,board.obj) == True:
+                movements.append([allie.x,allie.y])
+
+        for space in pieces.make_a_path(piece,king.x,king.y,board.obj):
+            for allie in allies:
+                if pieces.validate_movement(allie,space[0],space[1],board.obj) == True and pieces.find_obstacle(allie,space[0],space[1],board.obj) == True:
+                    movements.append([allie.x,allie.y])
+    if len(movements) == 0:
+        return True
+    else:
+        return movements
+#prepare the board
 def start_game():
     """This function calls all the functions needed to start a new game"""
     add_position_to_the_pieces(black_pieces,"black")
@@ -85,17 +182,36 @@ while True:
     
     
     if turn == "player1":
-        
+        king_is_check = king_check("white")
+        while  king_is_check != True:
+            print("Your King is on check protect it \n these are your avaible pieces to move:\n", king_is_check ,"\n select the one you're going to move")
+            piece = input()
+            while piece not in king_is_check:
+                print("Your king is in danger move another piece")
+            print("where do you want to move it")
+            new = input()
+            board.obj[int(piece[0])][int(piece[1])].move(board,int(new[0]),int(new[1]),turn)
+            
+
         move = player.player1.turn(board)
         while move == False:
             move = player.player1.turn(board)
         print(show_board(change_to_icon(board.obj)))
         turn = "player2"
+
     else:
+        king_is_check = king_check("black")
+        while  king_is_check != True:
+            print("Your King is on check protect it \n these are your avaible pieces to move:\n", king_is_check ,"\n select the one you're going to move")
+            piece = input()
+            while piece not in king_is_check:
+                print("Your king is in danger move another piece")
+            print("where do you want to move it")
+            new = input()
+            board.obj[int(piece[0])][int(piece[1])].move(board,int(new[0]),int(new[1]),turn)
+            
         move = player.player2.turn(board)
         while move == False:
             move = player.player2.turn(board)
         print(show_board(change_to_icon(board.obj)))
         turn = "player1"
-    
-
