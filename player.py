@@ -12,13 +12,13 @@ __status__ ="Developer"
 This module make the player
 """
 class player(object):
-    def __init__(self,color,name):
+    def __init__(self,color,name,castling=True):
         self.color = color
         self.name  = name
+        self.castling = castling
     def turn(self,board):
 
-        print(
-        """choose 1 to move a piece \nchoose 2 to give up""")
+        print( """choose 1 to move a piece \nchoose 2 to give up\nchoose 3 to castle""")
         selection = input()
         if selection == "1":
                 try:
@@ -32,14 +32,24 @@ class player(object):
                 except:
                     print("invalid input")
                     return False
-
-                      
-                
-                    
+        
         elif selection == "2":    
             print(self.name ,"have give up")
+
+        elif selection == "3":
+            if self.castling == True:
+                king = input("choose the king")
+                king = board.obj[int(king[0])][int(king[1])]
+                rook = input("choose")
+                rook = board.obj[int(rook[0])][int(rook[1])]
+                king.castling(rook,board,self)
+                self.castling == False
+            else:
+                print("You can only make a castling one time")
+                return False
         else:
             print("Wrong option")
+            return False
 
 
 

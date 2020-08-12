@@ -55,16 +55,12 @@ def generate_board():
     return New_board
 
 def replace_spaces(x,y):
-    if x == 0:
-        x = 1
-    elif y ==0:
-        y =1
-
+    
     if x %2 ==0 and y %2 !=0:
-        return "⬜"
-    elif x %2 !=0 and y %2 ==0:
-        return "⬜"
-    else:
         return "⬛"
+    elif x %2 !=0 and y %2 ==0:
+        return "⬛"
+    else:
+        return "⬜"
 
 

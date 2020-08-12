@@ -56,7 +56,7 @@ class Piece(object):
         else:
             self.icon = black_pieces[self.name]
 
-    def move(self,entry_board,new_X,new_Y,player):
+    def move(self,entry_board,new_X,new_Y,player,move_type="default"):
         """This function determinates if the movement that the player is trying to do is valid 
         if its not valid the function returns false and the player have to choose another movement"""
        
@@ -65,12 +65,12 @@ class Piece(object):
             return False
 
         board_list = entry_board.obj 
-    
-        if validate_movement(self,new_X,new_Y,board_list) == False:
+        
+        if validate_movement(self,new_X,new_Y,board_list) == False and move_type == "default":
             print("Invalid movement")
             return False
 
-        if self.name != "knight":  
+        if self.name != "knight" and move_type == "default":  
             if find_obstacle(self,new_X,new_Y,entry_board.obj) == False:
                 print("There's a piece in the way")
                 return False
@@ -85,7 +85,19 @@ class Piece(object):
         
 class King(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="king",moves=0,safe=True):   
-        Piece.__init__(self,color,x,y,icon,name,moves)        
+        Piece.__init__(self,color,x,y,icon,name,moves)  
+    
+    def castling(self,rook,entry_board,player):       
+        if find_obstacle(self,rook.x,rook.y,entry_board.obj) == False:
+            print("You can't castle with pieces in the middle")
+            return False
+
+        if rook.y < self.y:
+            self.move(entry_board,self.x,self.y-2,player,"castling")
+            rook.move(entry_board,self.x,self.y+1,player,"castling")            
+        else:
+            self.move(entry_board,self.x,self.y+2,player,"castling")
+            rook.move(entry_board,self.x,self.y-1,player,"castling")      
      
 class Queen(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="queen",moves=0):   
@@ -152,12 +164,14 @@ def make_a_path(piece_to_move,new_x,new_y,entry_board):
                     spaces.append([x,piece_to_move.y])
 
     elif piece_to_move.y != new_y and piece_to_move.x == new_x:# horizontal movement
+        
         if piece_to_move.y < new_y:
-            for y in range(piece_to_move.y ,new_y):
+            
+            for y in range(piece_to_move.y ,new_y):                             
                 if [piece_to_move.x,y] not in [[piece_to_move.x,piece_to_move.y],[new_x,new_y]]:
                     spaces.append([piece_to_move.x,y])
-        else:
-            for y in range(piece_to_move.y ,new_y):
+        else:            
+            for y in range(new_y,piece_to_move.y):                             
                 if [piece_to_move.x,y] not in [[piece_to_move.x,piece_to_move.y],[new_x,new_y]]:
                     spaces.append([piece_to_move.x,y])
 
@@ -166,6 +180,7 @@ def make_a_path(piece_to_move,new_x,new_y,entry_board):
         if new_x < piece_to_move.x:
             if new_y < piece_to_move.y:
                 for distance in range(abs(move_distance_x)):
+                    distance +=1
                     spaces.append([piece_to_move.x-1,piece_to_move.y-1])
             else:
                 for distance in range(move_distance_y):
@@ -182,6 +197,7 @@ def make_a_path(piece_to_move,new_x,new_y,entry_board):
 
 def find_obstacle(piece_to_move,new_x,new_y,entry_board):
     spaces = make_a_path(piece_to_move,new_x,new_y,entry_board)
+    
     #compare if in the positions between the actual position and the new one there's a piece
     if spaces == True:
         return True 
@@ -191,7 +207,7 @@ def find_obstacle(piece_to_move,new_x,new_y,entry_board):
             return False
     return True
 # validate if the movement is allowed 
-def validate_movement(piece_to_move,new_x,New_y,board_list):
+def validate_movement(piece_to_move,new_x,New_y,board_list,movement_type="default"):
     space_type = type(board_list[new_x][New_y])
     diagonal_position =[]
     move_distance_x = new_x - piece_to_move.x
@@ -202,10 +218,11 @@ def validate_movement(piece_to_move,new_x,New_y,board_list):
     if type(board_list[new_x][New_y]) != str:#here i check if the space is empty
              if board_list[new_x][New_y].color == piece_to_move.color:# if the colors of the pieces is diferent move the pieces
                 return False    
-
     
     if piece_to_move.name == "king":
         if move_distance_x in [0,1,-1] and move_distance_y in [0,1,-1]:
+            return True
+        elif piece_to_move.x == new_x and move_distance_y == 2 and movement_type == "castling":
             return True
         else:
             return False                 
@@ -245,23 +262,38 @@ def validate_movement(piece_to_move,new_x,New_y,board_list):
         else:
             if piece_to_move.x < new_x:
                 return False
-
+        
         if piece_to_move.moves <1:
-            
             if space_type == str:
-                
                 if move_distance_x in [1,-1,2,-2] and piece_to_move.y == New_y:
                     return True
                 return False
+
         else:
+               
             if space_type == str:
                 if move_distance_x in [1,-1] and piece_to_move.y == New_y:
                     return True
-            
-            elif  move_distance_x in [1,-1] and move_distance_y in [1,-1]:
+                
+                elif type(board_list[new_x-1][New_y]) != str:
+                    if board_list[new_x-1][New_y].moves == 1 and piece_to_move.x == 4:
+                        print(new_x-1,New_y)
+                        board_list[new_x-1][New_y] = board.replace_spaces(new_x-1,New_y)
+                        return True
+                        
+            elif  move_distance_x in [1,-1] and move_distance_y in [1,-1]:                
                 if space_type != str:
                     return True
+            
+                    
+                      
+                        
+                        
             return False
     else:
         print("Error")
-     
+
+
+        
+       
+    

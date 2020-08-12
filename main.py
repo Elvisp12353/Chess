@@ -59,8 +59,6 @@ def change_to_icon(board):
 
     return changed_board
 
-
-
 def get_avaible_pieces(board):
     black_pieces =[]
     white_pieces =[]
@@ -179,7 +177,6 @@ else:
 turn = "player1"
 
 while True:
-    
     
     if turn == "player1":
         king_is_check = king_check("white")
