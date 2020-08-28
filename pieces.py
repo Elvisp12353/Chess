@@ -50,21 +50,29 @@ class Piece(object):
         self.x = x
         self.y =y
         self.moves = moves
-
-        if self.color == "white":
-            self.icon = white_pieces[self.name]
-        else:
-            self.icon = black_pieces[self.name]
+        self.icon = white_pieces[self.name] if self.color == "white" else black_pieces[self.name]
+    
+    def to_crown(self,entry_board):
+            exchangable_pieces ={
+            1: Queen(self.color,self.x,self.y),
+            2: Rook(self.color,self.x,self.y),
+            3: Bishops(self.color,self.x,self.y),
+            4: Knights(self.color,self.x,self.y)
+            }
+            selection = int(input("Select for which piece you want to exchange your pawn:\nselect 1 for Queen\nselect 2 for Rook\nselect 3 for Bishop\nselect 4 for Knigth"))
+            
+            entry_board.obj[self.x][self.y] = exchangable_pieces[selection]
+            return entry_board
 
     def move(self,entry_board,new_X,new_Y,player,move_type="default"):
         """This function determinates if the movement that the player is trying to do is valid 
         if its not valid the function returns false and the player have to choose another movement"""
-       
+        
+        board_list = entry_board.obj 
         if player.color != self.color:
+            print(player.color)
             print("You can't move the other player's pieces")
             return False
-
-        board_list = entry_board.obj 
         
         if validate_movement(self,new_X,new_Y,board_list) == False and move_type == "default":
             print("Invalid movement")
@@ -74,22 +82,27 @@ class Piece(object):
             if find_obstacle(self,new_X,new_Y,entry_board.obj) == False:
                 print("There's a piece in the way")
                 return False
-
+        
         board_list[self.x][self.y] = board.replace_spaces(self.x,self.y)   
         self.x = new_X
         self.y = new_Y
         self.moves +=1
         entry_board.moves+=1
         board_list[new_X][new_Y] = self
+        
+        if self.name == "pawn":
+            if self.color == "black" and self.x ==7 or self.color == "white" and self.x ==0:
+                self.to_crown(entry_board)
+         
         return board
         
 class King(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="king",moves=0,safe=True):   
-        Piece.__init__(self,color,x,y,icon,name,moves)  
+        Piece.__init__(self,color,x,y,icon,name,moves)
+        self.safe = safe  
     
     def castling(self,rook,entry_board,player):       
-        if find_obstacle(self,rook.x,rook.y,entry_board.obj) == False:
-            print("You can't castle with pieces in the middle")
+        if find_obstacle(self,rook.x,rook.y,entry_board.obj) == False:            
             return False
 
         if rook.y < self.y:
@@ -118,9 +131,7 @@ class Knights(Piece):
 class Pawn(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="pawn",moves=0):   
         Piece.__init__(self,color,x,y,icon,name,moves=0)
-    def to_crown(self):
-        pass
-    
+   
 def generate_pieces(color):
     """This function make all the piece objets that the game is gonna use""" 
     pawns =[]
@@ -142,20 +153,24 @@ def generate_pieces(color):
     return line,pawns
 
 def make_a_path(piece_to_move,new_x,new_y,entry_board):
+    """
+    this function creates a list with all the spaces that a piece cross to reach certain position
+    """
     spaces =[]
     diagonal_position =[]
     move_distance_x = new_x - piece_to_move.x
     move_distance_y = new_y - piece_to_move.y
     diagonal_position.append(move_distance_x)
     diagonal_position.append(-(new_x - piece_to_move.x) )
-
+    
     if move_distance_x in[1,-1] and move_distance_y in[1,-1]:# if the piece only move 1 step return true
         return True
     
     #if the piece move add all the positions between the actual position and the new position 
     elif new_x != piece_to_move.x and new_y == piece_to_move.y:# vertical movement
         if piece_to_move.x < new_x:                     
-            for x in range(piece_to_move.x,new_x):           
+            for x in range(piece_to_move.x,new_x):
+                           
                 if [x,piece_to_move.y] not in [[piece_to_move.x,piece_to_move.y],[new_x,new_y]]:
                     spaces.append([x,piece_to_move.y])
         else:   
@@ -176,26 +191,45 @@ def make_a_path(piece_to_move,new_x,new_y,entry_board):
                     spaces.append([piece_to_move.x,y])
 
     elif new_y - piece_to_move.y in diagonal_position:#Diagonal movement
-
+        x = piece_to_move.x
+        y = piece_to_move.y
         if new_x < piece_to_move.x:
             if new_y < piece_to_move.y:
                 for distance in range(abs(move_distance_x)):
                     distance +=1
-                    spaces.append([piece_to_move.x-1,piece_to_move.y-1])
+                    x = x -1
+                    y = y -1
+                    if [x,y] != [new_x,new_y]:
+                        spaces.append([x,y])
+               
             else:
                 for distance in range(move_distance_y):
-                    spaces.append([piece_to_move.x-1,piece_to_move.y+1])
+                    x = x -1
+                    y = y +1
+                    if [x,y] != [new_x,new_y]:
+                        spaces.append([x,y])
+                
         else:
             if new_y > piece_to_move.y:
                 for distance in range(move_distance_x):
-                    spaces.append([piece_to_move.x+1,piece_to_move.y+1])
+                    x = x +1
+                    y = y +1
+                    if [x,y] != [new_x,new_y]:
+                        spaces.append([x,y])
+                
             else:
                 for distance in range(move_distance_x):
-                    spaces.append([piece_to_move.x+1,piece_to_move.y-1])
-    
+                    x = x +1
+                    y = y -1
+                    if [x,y] != [new_x,new_y]:
+                        spaces.append([x,y])
+                   
     return spaces
 
 def find_obstacle(piece_to_move,new_x,new_y,entry_board):
+    """
+    This function checks if there's a piece between the piece the player wants to move and it's destiny
+    """
     spaces = make_a_path(piece_to_move,new_x,new_y,entry_board)
     
     #compare if in the positions between the actual position and the new one there's a piece
@@ -208,14 +242,15 @@ def find_obstacle(piece_to_move,new_x,new_y,entry_board):
     return True
 # validate if the movement is allowed 
 def validate_movement(piece_to_move,new_x,New_y,board_list,movement_type="default"):
+    """
+    This function verifies if the movement that the player is trying to do is legal
+    """
     space_type = type(board_list[new_x][New_y])
-    diagonal_position =[]
     move_distance_x = new_x - piece_to_move.x
     move_distance_y = New_y - piece_to_move.y
-    diagonal_position.append(move_distance_x)
-    diagonal_position.append(-(new_x - piece_to_move.x)) 
-    
-    if type(board_list[new_x][New_y]) != str:#here i check if the space is empty
+    diagonal_position = [move_distance_x,-(new_x - piece_to_move.x)]
+
+    if type(board_list[new_x][New_y]) != str:#here i check if the space is empty if is not compare the color of the pieces
              if board_list[new_x][New_y].color == piece_to_move.color:# if the colors of the pieces is diferent move the pieces
                 return False    
     
@@ -224,36 +259,31 @@ def validate_movement(piece_to_move,new_x,New_y,board_list,movement_type="defaul
             return True
         elif piece_to_move.x == new_x and move_distance_y == 2 and movement_type == "castling":
             return True
-        else:
-            return False                 
+                        
     elif piece_to_move.name == "queen":
         if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
             return True
-        if New_y - piece_to_move.y in diagonal_position:
+
+        
+        if New_y - piece_to_move.y  in diagonal_position:
             return True
-        else:
-            return False            
+                  
     elif piece_to_move.name == "rook":
     
         if new_x != piece_to_move.x and New_y == piece_to_move.y or piece_to_move.y != New_y and piece_to_move.x == new_x:            
             return True 
-        else:
-            return False
+       
     elif piece_to_move.name =="bishop":
-        
         if New_y - piece_to_move.y in diagonal_position:
             return True
-        else:
-            return False
-        return False
+        
     elif piece_to_move.name == "knight":
         
         if move_distance_x in [2,-2] and move_distance_y  in [1,-1]:
             return True 
         elif move_distance_y in [2,-2] and move_distance_x in [1,-1]:
             return True
-        else:
-            return False
+        
     elif piece_to_move.name == "pawn":
 
         if piece_to_move.color == "black":
@@ -267,33 +297,19 @@ def validate_movement(piece_to_move,new_x,New_y,board_list,movement_type="defaul
             if space_type == str:
                 if move_distance_x in [1,-1,2,-2] and piece_to_move.y == New_y:
                     return True
-                return False
-
         else:
-               
             if space_type == str:
                 if move_distance_x in [1,-1] and piece_to_move.y == New_y:
                     return True
                 
                 elif type(board_list[new_x-1][New_y]) != str:
                     if board_list[new_x-1][New_y].moves == 1 and piece_to_move.x == 4:
-                        print(new_x-1,New_y)
+                        
                         board_list[new_x-1][New_y] = board.replace_spaces(new_x-1,New_y)
                         return True
                         
             elif  move_distance_x in [1,-1] and move_distance_y in [1,-1]:                
                 if space_type != str:
                     return True
-            
-                    
-                      
-                        
-                        
-            return False
-    else:
-        print("Error")
-
-
-        
-       
     
+    return False      

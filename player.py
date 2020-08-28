@@ -11,7 +11,7 @@ __status__ ="Developer"
 """
 This module make the player
 """
-class player(object):
+class Player(object):
     def __init__(self,color,name,castling=True):
         self.color = color
         self.name  = name
@@ -43,6 +43,9 @@ class player(object):
                 rook = input("choose")
                 rook = board.obj[int(rook[0])][int(rook[1])]
                 king.castling(rook,board,self)
+                if king.castling(rook,board,self) == False:
+                    print("You can't castle with pieces in the middle")
+                    return False
                 self.castling == False
             else:
                 print("You can only make a castling one time")
@@ -51,7 +54,3 @@ class player(object):
             print("Wrong option")
             return False
 
-
-
-player1 = player("white","player1")
-player2 = player("black","player2")
