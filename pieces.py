@@ -1,13 +1,4 @@
 #!/ust/bin/python3
-__author__ ="ELvis Genao"
-__copyright__ ="Copyright"
-__credits__ ="Elvis"
-__license__ ="GPl"
-__version__ ="1.0.1"
-__maintainer__ ="Elvis Genao"
-__email__ ="elvisp12353@gmail.com"
-__status__ ="Developer"
-
 """
 This module make the pieces That will be used in the game
 
@@ -35,7 +26,7 @@ black_pieces={
 
 class Piece(object):
     """
-    This is the father class for all the pieces it have the properties:
+    This is the main class for all the pieces it have the properties:
     
     icon = The character of the piece
     color = color of the piece
@@ -132,7 +123,7 @@ class Pawn(Piece):
     def __init__(self,color,x=0,y=0,icon="",name="pawn",moves=0):   
         Piece.__init__(self,color,x,y,icon,name,moves=0)
    
-def generate_pieces(color):
+def generate_pieces(color): 
     """This function make all the piece objets that the game is gonna use""" 
     pawns =[]
     line = []
@@ -240,7 +231,7 @@ def find_obstacle(piece_to_move,new_x,new_y,entry_board):
         if type(entry_board[space[0]][space[1]]) != str:            
             return False
     return True
-# validate if the movement is allowed 
+
 def validate_movement(piece_to_move,new_x,New_y,board_list,movement_type="default"):
     """
     This function verifies if the movement that the player is trying to do is legal

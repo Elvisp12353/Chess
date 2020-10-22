@@ -1,13 +1,4 @@
 #!/ust/bin/python3
-__author__ ="ELvis Genao"
-__copyright__ ="Copyright"
-__credits__ ="Elvis"
-__license__ ="GPl"
-__version__ ="1.0.1"
-__maintainer__ ="Elvis Genao"
-__email__ ="elvisp12353@gmail.com"
-__status__ ="Developer"
-
 """
 This module make the player
 """
@@ -37,19 +28,23 @@ class Player(object):
             print(self.name ,"have give up")
 
         elif selection == "3":
-            if self.castling == True:
-                king = input("choose the king")
-                king = board.obj[int(king[0])][int(king[1])]
-                rook = input("choose")
-                rook = board.obj[int(rook[0])][int(rook[1])]
-                king.castling(rook,board,self)
-                if king.castling(rook,board,self) == False:
-                    print("You can't castle with pieces in the middle")
+            try:
+                if self.castling == True:
+                    king = input("choose the king")
+                    king = board.obj[int(king[0])][int(king[1])]
+                    rook = input("choose")
+                    rook = board.obj[int(rook[0])][int(rook[1])]
+                    king.castling(rook,board,self)
+                    if king.castling(rook,board,self) == False:
+                        print("You can't castle with pieces in the middle")
+                        return False
+                    self.castling == False
+                else:
+                    print("You can only make a castling one time")
                     return False
-                self.castling == False
-            else:
-                print("You can only make a castling one time")
-                return False
+            except:
+                    print("invalid input")
+
         else:
             print("Wrong option")
             return False
