@@ -80,7 +80,8 @@ def get_king_avaible_positions(king):
     positions =[]    
     for x in range(-1,2):        
         for y in range(-1,2):
-            if [king.x+x,king.y+y] != [king.x,king.y] and king.x+x <8 and king.x+x >-1 and king.y+y <8 and king.y+y >-1 :
+            diferent_position = [king.x+x,king.y+y] != [king.x,king.y]
+            if diferent_position == True and king.x+x <8 and king.x+x >-1 and king.y+y <8 and king.y+y >-1:
                 if pieces.validate_movement(king,king.x+x,king.y+y,board.obj) == True:
                     positions.append([king.x+x,king.y+y])
     
