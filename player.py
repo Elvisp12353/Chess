@@ -7,25 +7,25 @@ class Player(object):
         self.color = color
         self.name  = name
         self.castling = castling
-    def turn(self,board):
-
+    def turn(self,board):        
         print( """choose 1 to move a piece \nchoose 2 to give up\nchoose 3 to castle""")
         selection = input()
         if selection == "1":
-                try:
-                    selected_piece = input("Choose which piece you wanna move")
-                    pieceX = selected_piece[0] 
-                    pieceY = selected_piece[1]
-                    new_position = input("Choose where you wanna move")
-                    newX = new_position[0]
-                    newY = new_position[1]
-                    return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY),self)  
-                except:
-                    print("invalid input")
-                    return False
+            try:
+                selected_piece = input("Choose which piece you wanna move")
+                pieceX = selected_piece[0] 
+                pieceY = selected_piece[1]
+                new_position = input("Choose where you wanna move")
+                newX = new_position[0]
+                newY = new_position[1]
+                return board.obj[int(pieceX)][int(pieceY)].move(board,int(newX),int(newY),self)  
+            except:
+                print("invalid input")
+                return False                
         
         elif selection == "2":    
             print(self.name ,"have give up")
+            exit()
 
         elif selection == "3":
             try:

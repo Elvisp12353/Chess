@@ -1,5 +1,4 @@
 #!/ust/bin/python3
-
 """
 This module make the board
 """
@@ -12,11 +11,11 @@ class Board(object):
     
     def make_board(self):
         """This function make the board"""
-        matrix =[]  #This is the matrix that'll contain the board    
+        matrix =[]  #This is the matrix that'll contain the board
         for i in range(8):
             matrix.append([])
 
-        line =[]    #This contain the lines     
+        line =[]    #This contain the lines
         for  i in range(4):     
             i = i
             line.append("⬜")
